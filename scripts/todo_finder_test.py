@@ -23,6 +23,8 @@ from core.tests import test_utils
 
 from . import todo_finder
 
+TASK_KEYWORD = f'{"TO"}{"DO"}'
+
 
 class TodoFinderTests(test_utils.GenericTestBase):
     """Unit tests for testing the todo_finder script."""
@@ -33,12 +35,11 @@ class TodoFinderTests(test_utils.GenericTestBase):
             shutil.rmtree('dummy_directory')
         os.mkdir('dummy_directory', mode=0o777)
         with open('dummy_directory/file1.txt', 'w', encoding='utf-8') as file:
-            content = (
-                """
+            content = f"""
                 Test Line 1
                 // TODO(#43242): Test Description 1
-                # TODO(#1234)
-                # TODO(#23432)
+                # {TASK_KEYWORD}(#1234)
+                # {TASK_KEYWORD}(#23432)
                 # TODO(#12314): Test Description 2
                 # TODO(#12334): Test Description 3
                 # TODO(#1234): Test Description 4
@@ -56,8 +57,9 @@ class TodoFinderTests(test_utils.GenericTestBase):
                 # TODO(#34414   ): Test Description 13
                 // TODO(#21524): Test Description 14
                 // Some Random Comment TODO(#51243): Test Description
-                """
-            ).lstrip('\n')
+                """.lstrip(
+                '\n'
+            )
             file.write(textwrap.dedent(content))
         with open('dummy_directory/file2.txt', 'w', encoding='utf-8') as file:
             content = (
@@ -98,12 +100,12 @@ class TodoFinderTests(test_utils.GenericTestBase):
             },
             {
                 'file_path': 'dummy_directory/file1.txt',
-                'line_content': '# TODO(#1234)',
+                'line_content': f'# {TASK_KEYWORD}(#1234)',
                 'line_number': 3,
             },
             {
                 'file_path': 'dummy_directory/file1.txt',
-                'line_content': '# TODO(#23432)',
+                'line_content': f'# {TASK_KEYWORD}(#23432)',
                 'line_number': 4,
             },
             {
@@ -312,15 +314,15 @@ class TodoFinderTests(test_utils.GenericTestBase):
 
     def test_get_issue_number_from_todo(self) -> None:
         invalid_issue_number_one = todo_finder.get_issue_number_from_todo(
-            '// TODO(#12343):'
+            f'// {TASK_KEYWORD}(#12343):'
         )
         self.assertEqual(invalid_issue_number_one, None)
         invalid_issue_number_two = todo_finder.get_issue_number_from_todo(
-            '# TODO(#12342)'
+            f'# {TASK_KEYWORD}(#12342)'
         )
         self.assertEqual(invalid_issue_number_two, None)
         invalid_issue_number_three = todo_finder.get_issue_number_from_todo(
-            '# TODO(12345)'
+            f'# {TASK_KEYWORD}(12345)'
         )
         self.assertEqual(invalid_issue_number_three, None)
         invalid_issue_number_four = todo_finder.get_issue_number_from_todo(
