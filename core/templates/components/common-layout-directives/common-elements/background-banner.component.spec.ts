@@ -14,6 +14,7 @@
 
 import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
 import {BackgroundBannerComponent} from './background-banner.component';
+import {AppConstants} from 'app.constants';
 
 /**
  * @fileoverview Unit tests for BackgroundBannerComponent.
@@ -49,4 +50,28 @@ describe('BackgroundBannerComponent', () => {
       '/assets/images/background/bannerB.svg'
     );
   });
+
+  it(
+    'should use a consistent banner image when screenshot consistency is ' +
+      'enabled',
+    () => {
+      // This throws "Cannot assign to 'SCREENSHOT_CONSISTENCY' because it is a
+      // read-only property.". We need to suppress this error because we
+      // need to modify this constant for testing purposes.
+      // @ts-ignore
+      AppConstants.SCREENSHOT_CONSISTENCY = true;
+
+      component.ngOnInit();
+
+      expect(component.bannerImageFileUrl).toBe(
+        '/assets/images/background/bannerA.svg'
+      );
+
+      // This throws "Cannot assign to 'SCREENSHOT_CONSISTENCY' because it is a
+      // read-only property.". We need to suppress this error because we
+      // need to reset this constant after testing.
+      // @ts-ignore
+      AppConstants.SCREENSHOT_CONSISTENCY = false;
+    }
+  );
 });

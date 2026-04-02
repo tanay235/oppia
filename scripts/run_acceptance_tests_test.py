@@ -269,6 +269,7 @@ class RunAcceptanceTestsTests(test_utils.GenericTestBase):
                         'headless': False,
                         'mobile': False,
                         'prod_env': False,
+                        'update_snapshot': False,
                         'stdout': subprocess.PIPE,
                     },
                 ],
@@ -350,6 +351,7 @@ class RunAcceptanceTestsTests(test_utils.GenericTestBase):
                         'headless': False,
                         'mobile': False,
                         'prod_env': False,
+                        'update_snapshot': False,
                         'stdout': subprocess.PIPE,
                     },
                 ],
@@ -378,7 +380,9 @@ class RunAcceptanceTestsTests(test_utils.GenericTestBase):
                 common,
                 'modify_constants',
                 lambda *_, **__: None,
-                expected_kwargs=[{'prod_env': False}],
+                expected_kwargs=[
+                    {'prod_env': False, 'screenshot_consistency': True}
+                ],
             )
         )
         self.exit_stack.enter_context(
@@ -439,6 +443,7 @@ class RunAcceptanceTestsTests(test_utils.GenericTestBase):
                         'headless': False,
                         'mobile': False,
                         'prod_env': False,
+                        'update_snapshot': False,
                         'stdout': subprocess.PIPE,
                     },
                 ],
@@ -514,6 +519,7 @@ class RunAcceptanceTestsTests(test_utils.GenericTestBase):
                         'headless': False,
                         'mobile': False,
                         'prod_env': False,
+                        'update_snapshot': False,
                         'stdout': subprocess.PIPE,
                     },
                 ],
@@ -584,6 +590,7 @@ class RunAcceptanceTestsTests(test_utils.GenericTestBase):
                         'headless': False,
                         'mobile': False,
                         'prod_env': False,
+                        'update_snapshot': False,
                         'stdout': subprocess.PIPE,
                     },
                 ],
